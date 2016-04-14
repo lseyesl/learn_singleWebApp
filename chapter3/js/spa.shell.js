@@ -54,12 +54,42 @@ spa.shell = (function(){
 
 	//public method
 	toggleChat = function(do_extend,callback){
+		var
+		px_chat_ht = jqueryMap.$chat.height(),
+		is_open    = px_chat_ht === configMap.chat_extend_height,
+		is_closed  = px_chat_ht === configMap.chat_retract_height,
+		is_sliding = ! is_open && ! is_closed;
+
+		if(is_sliding){return false;}
+
+		if(do_extend){
+			jqueryMap.$chat.animate(
+				{heigth:configMap.chat_extend_height},
+				configMap.chat_extend_time,
+				function(){
+					if(callback){callback(jqueryMap.$chat);}	
+				}
+			);
+			return true;
+		}
 		
+		jqueryMap.$chat.animate(
+			{height:configMap.chat_retract_height},
+			configMap.chat_retract_time,
+			function(){
+				if(callback){callback(jqueryMap.$chat);}
+			}
+		);
+		return true;
+
 	};
-	initModle = function($container){
+	initModule = function($container){
 		stateMap.$container = $container;
 		$container.html(configMap.main_html);
 		setJqueryMap();
+
+		setTimeout(function(){toggleChat(true);},3000);
+		setTimeout(function(){toggleChat(false);},8000);
 	};
 	//end public method
 

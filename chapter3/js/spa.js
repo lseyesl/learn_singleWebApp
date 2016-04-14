@@ -15,4 +15,4 @@ var spa = (function(){
 	};
 	
 	return {initModule:initModule};
-});
+}());
