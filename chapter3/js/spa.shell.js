@@ -34,9 +34,14 @@ spa.shell = (function(){
 		chat_extend_time:1000,
 		chat_retract_time:300,
 		chat_extend_height:450,
-		chat_retract_height:15
+		chat_retract_height:15,
+		chat_extended_title:'Click to retract',
+		chat_retracted_title:'Click to extend'
 	},
-	stateMap = {$container:null},
+	stateMap = {
+		$container:null,
+		is_chat_retracted:true
+	},
 	jqueryMap = {},
 	setJqueryMap,toggleChat,initModule;
 	// end module scope variables
@@ -67,6 +72,10 @@ spa.shell = (function(){
 				{heigth:configMap.chat_extend_height},
 				configMap.chat_extend_time,
 				function(){
+					jqueryMap.$chat.attr(
+						"title",configMap.chat_exended_title
+					);
+					stateMap.is_chat_retracted = false;
 					if(callback){callback(jqueryMap.$chat);}	
 				}
 			);
@@ -77,6 +86,10 @@ spa.shell = (function(){
 			{height:configMap.chat_retract_height},
 			configMap.chat_retract_time,
 			function(){
+				jqueryMap.$chat.attr(
+					"title",configMap.chat_retracted_title
+				);
+				stateMap.is_chat_retracted = true;
 				if(callback){callback(jqueryMap.$chat);}
 			}
 		);
