@@ -166,7 +166,7 @@ spa.shell = (function(){
 	}
 	onClickChat = function(event){
 		changeAnchorPart({
-			chat:{stateMap.is_chat_retracted?'optn':'closed'}
+			chat:(stateMap.is_chat_retracted?'optn':'closed')
 		});
 		return false;
 	};
@@ -175,7 +175,7 @@ spa.shell = (function(){
 		$container.html(configMap.main_html);
 		setJqueryMap();
 
-		stateMap.ischat_retracted = true;
+		stateMap.is_chat_retracted = true;
 		jqueryMap.$chat
 			.attr('title',configMap.chat_retracted_title)
 			.click(onClickChat);
@@ -183,7 +183,7 @@ spa.shell = (function(){
 			schemamap:configMap.anchor_schema_map
 		});
 
-		$(window).bind('hashchange',onHashchange).trigger('hashchange';)
+		$(window).bind('hashchange',onHashchange).trigger('hashchange');
 
 	};
 	//end public method
