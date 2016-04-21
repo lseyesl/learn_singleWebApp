@@ -41,6 +41,7 @@ spa.shell = (function(){
 		chat_extended_title:'Click to retract',
 		chat_retracted_title:'Click to extend'
 	},
+	
 	stateMap = {
 		$container:null,
 		anchor_map:{},
@@ -88,6 +89,15 @@ spa.shell = (function(){
 
 			}
 		}
+
+		try{
+			$.uriAnchor.setAnchor(anchor_map_revise);
+		}catch(error){
+			$.uriAnchor.setAnchor(stateMap.anchor_map,null,true);
+			bool_return = false;
+		}
+
+		return bool_return;
 	}
 	//end dom method
 
@@ -147,7 +157,7 @@ spa.shell = (function(){
 		_s_chat_previous = anchor_map_previous._s_chat;
 		_s_chat_proposed = anchor_map_proposed._s_chat;
 
-		if(!anchor_map_previous || _s_chat_previous !== _s_chatproposed){
+		if(!anchor_map_previous || _s_chat_previous !== _s_chat_proposed){
 			s_chat_proposed = anchor_map_proposed.chat;
 			switch(s_chat_proposed){
 				case 'open':
@@ -166,7 +176,7 @@ spa.shell = (function(){
 	}
 	onClickChat = function(event){
 		changeAnchorPart({
-			chat:(stateMap.is_chat_retracted?'optn':'closed')
+			chat:(stateMap.is_chat_retracted?'open':'closed')
 		});
 		return false;
 	};
@@ -180,7 +190,7 @@ spa.shell = (function(){
 			.attr('title',configMap.chat_retracted_title)
 			.click(onClickChat);
 		$.uriAnchor.configModule({
-			schemamap:configMap.anchor_schema_map
+			schema_map:configMap.anchor_schema_map
 		});
 
 		$(window).bind('hashchange',onHashchange).trigger('hashchange');
