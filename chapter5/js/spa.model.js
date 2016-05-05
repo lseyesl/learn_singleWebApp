@@ -19,11 +19,14 @@ spa.model = (function(){
 	configMap = {anon_id:'a0'},
 	stateMap = {
 		anon_user :null,
+		cid_serial:0,
 		people_cid_map :{},
-		people_db : TAFFY()
+		people_db : TAFFY(),
+		user:null
 	},
-	isFakeData = true
-	personProto,makePerson,people,initModule;
+	isFakeData = true,
+	personProto,makeCid,clearPeopleDb,completeLogin,
+	makePerson,removePerson,people,initModule;
 
 	personProto = {
 		get_is_user : function(){
@@ -33,6 +36,19 @@ spa.model = (function(){
 			return this.cid === stateMap.anon_user.cid;	
 		}
 	},
+
+	makeCid = function(){
+		return 'c'+String(stateMap.cid_serial++);	
+	};
+
+	clearPeopleDb = function(){
+		var user = stateMap.user;
+		stateMap.people_db = TAFFY();
+		staeMap.people_cid_map = {};
+		if(user){
+					
+		}
+	}
 
 	makePerson = function(person_map){
 		var person,
@@ -54,7 +70,7 @@ spa.model = (function(){
 			person.id = id;	
 		}
 
-		sateMap.people_cid_map[cid]= person;
+		stateMap.people_cid_map[cid]= person;
 		stateMap.people_db.insert(person);
 		return person;
 	};
@@ -81,7 +97,21 @@ spa.model = (function(){
 		stateMap.user = stateMap.anon_user;
 
 		if(isFakeData){
-			
+			people_list = spa.fake.getPeopleList();
+			for(i=0;i<people_list.length;i++){
+				person_map = people_list[i];
+				makePerson({
+					cid:person_map._id,
+					css_map:person_map.css_map,
+					id:person_map._id,
+					name:person_map.name
+				});
+			}
 		}
+	};
+
+	return {
+		initModule:initModule,
+		people:people
 	}
 }());
