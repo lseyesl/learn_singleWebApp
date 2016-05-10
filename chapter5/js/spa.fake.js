@@ -28,8 +28,7 @@ spa.fake = (function(){
 		return 'id_'+ String(fakeIdSerial++);	
 	}
 
-	getPeopleList = function(){
-		return [
+	getPeopleList =[
 			{
 				name:'Betty',
 				_id:'id_01',
@@ -67,8 +66,7 @@ spa.fake = (function(){
 					}
 			}
 		
-		];	
-	};
+	];	
 
 	mockSio = (function(){
 		var on_sio,emit_sio,callback_map={};
