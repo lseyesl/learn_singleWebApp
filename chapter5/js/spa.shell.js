@@ -14,6 +14,7 @@ white:true
 /*global $,spa*/
 
 spa.shell = (function(){
+	'use strict';
 
 	// module scope variables
 	var
@@ -23,9 +24,11 @@ spa.shell = (function(){
 		},
 		main_html : String()
 		+'<div class="spa-shell-head">'
-		+'<div class="spa-shell-head-logo"></div>'
+		+'<div class="spa-shell-head-logo">'
+		+'<h1>spa</h1>'
+		+'<p>javascript end to end</p>'
+		+'</div>'
 		+'<div class="spa-shell-head-acct"></div>'
-		+'<div class="spa-shell-head-search"></div>'
 		+'</div>'
 		+'<div class="spa-shell-main">'
 		+'<div class="spa-shell-main-nav"></div>'
@@ -51,6 +54,7 @@ spa.shell = (function(){
 	jqueryMap = {},
 	copyAnchorMap,setJqueryMap,toggleChat,
 	changeAnchorPart,onHashchange,onResize,
+	onTapAcct,onLogin,onLogout,
 	setChatAnchor,initModule;
 	// end module scope variables
 	
@@ -63,7 +67,9 @@ spa.shell = (function(){
 	setJqueryMap = function(){
 		var $container = stateMap.$container;
 		jqueryMap = { 
-			$container:$container
+			$container:$container,
+			$acct:$container.find('.spa-shell-head-acct'),
+			$nav:$container.find('.spa-shell-main-nav')
 		};
 	};
 
@@ -185,13 +191,15 @@ spa.shell = (function(){
 
 	setChatAnchor = function(position_type){
 		return changeAnchorPart({chat:position_type});
-	}
+	};
+	/*
 	onClickChat = function(event){
 		changeAnchorPart({
 			chat:(stateMap.is_chat_retracted?'open':'closed')
 		});
 		return false;
 	};
+	*/
 
 	onResize = function(){
 		if(stateMap.resize_idto){return true;}
@@ -205,6 +213,26 @@ spa.shell = (function(){
 		);
 		return true;
 	};
+	
+	onTapAcct = function(event){
+		var acct_text,user_name,user=spa.model.people.get_user();
+		if(user.get_is_anon()){
+			user_name = prompt('Please sign-in');
+			spa.model.people.login(user_name);
+			jqueryMap.$acct.text('...processing...');
+		}else{
+			spa.model.people.logout();	
+		}
+	};
+
+	onLogin = function(event, login_user){
+		jqueryMap.$acct.text(login_user.name);
+	};
+
+	onLogout = function(event,logout_user){
+		jqueryMap.$acct.text('Please sign-in');		
+	};
+
 	initModule = function($container){
 		stateMap.$container = $container;
 		$container.html(configMap.main_html);
@@ -225,6 +253,11 @@ spa.shell = (function(){
 		.bind('resize',onResize)
 		.bind('hashchange',onHashchange)
 		.trigger('hashchange');
+
+		$.gevent.subscribe($container,'spa-login',onLogin);
+		$.gevent.subscribe($container,'spa-logout',onLogout);
+
+		jqueryMap.$acct.text('Please sign-in').bind('utap',onTapAcct);
 
 	};
 	//end public method
