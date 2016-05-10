@@ -119,8 +119,8 @@ spa.model = (function(){
 		login = function(name){
 			var sio = isFakeData ? spa.fake.mockSio:spa.data.getSio();
 			stateMap.user = makePerson({
-				cid:stateMap.user.cid,
-				css_map:stateMap.user.css_map,
+				cid:makeCid(),
+				css_map:{top:25,left:25,'background-color':'#8f8'},
 				name:stateMap.user.name
 			});
 
