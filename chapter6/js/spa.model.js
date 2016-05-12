@@ -45,7 +45,7 @@ spa.model = (function(){
 	clearPeopleDb = function(){
 		var user = stateMap.user;
 		stateMap.people_db = TAFFY();
-		staeMap.people_cid_map = {};
+		stateMap.people_cid_map = {};
 		if(user){
 			stateMap.people_db.insert(user);
 			stateMap.people_cid_map[user.cid] = user;
@@ -182,7 +182,7 @@ spa.model = (function(){
 				}
 
 				make_person_map = {
-					cid :person_map.id,
+					cid :person_map._id,
 					css_map:person_map.css_map,
 					id:person_map._id,
 					name:person_map.name
@@ -242,14 +242,14 @@ spa.model = (function(){
 			}
 
 			sio = isFakeData? spa.fake.mockSio:spa.data.getSio();
-			sio.on('lischange',_publish_listchange);
-			sio.on('updaechat',_publish_updatechat);
+			sio.on('listchange',_publish_listchange);
+			sio.on('updatechat',_publish_updatechat);
 			stateMap.is_connected = true;
 			return true;
 		};
 
 		send_msg = function(msg_text){
-			var msg_map
+			var msg_map,
 			sio = isFakeData?spa.fake.mockSio:spa.data.getSio();
 
 			if(!sio){
