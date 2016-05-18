@@ -24,10 +24,20 @@ spa.chat = (function(){
 		+'</div>'
 		+'<div class="spa-chat-closer">x</div>'
 		+'<div class="spa-chat-sizer">'
-		+'<div class="spa-chat-msgs"></div>'
-		+'<div class="spa-chat-box">'
-		+'<input type="text"/>'
-		+'<div>send</div>'
+		+'<div class="spa-chat-list">'
+		+'<div class="span-chat-list-box"></div>'
+		+'</div>'
+		+'<div class="spa-chat-msgs">'
+		+'<div class="spa-chat-msg-log"></div>'
+		+'<div class="spa-chat-msg-in">'
+		+'<form clas="spa-chat-msg-form">'
+		+'<input type="text" />'
+		+'<input type="submit" style="display:none;" />'
+		+'<div class="spa-chat-msg-send">'
+		+'send'
+		+'</div>'
+		+'</form>'
+		+'</div>'
 		+'</div>'
 		+'</div>'
 		+'</div>',
@@ -48,8 +58,8 @@ spa.chat = (function(){
 		slider_close_time:250,
 		slider_opened_em :16,
 		slider_closed_em:2,
-		slider_opened_title:'click to close',
-		slider_closed_title:'click to open',
+		slider_opened_title:'Tap to close',
+		slider_closed_title:'Tap to open',
 
 		slider_open_min_en:10,
 		window_height_min_em:20,
@@ -67,9 +77,14 @@ spa.chat = (function(){
 		slider_opened_px:0
 	},
 	jqueyrMap = {},
-	setJqueryMap,getEmSize,setPxSizes,setSliderPosition,
-	onClickToogle,configModule,initModule,removeSlider,
-	handleResize;
+	setJqueryMap,getEmSize,scrollChat,
+	writeChat,writeAlert,clearChat,
+	setPxSizes,setSliderPosition,
+	onTapToogle,onSubmitMsg,onTapList,
+	onSetchatee,onUpdatechat,onListchange,
+	onLogin,onLogout,
+	configModule,initModule,
+	removeSlider,handleResize;
 	
 	//begin utility method
 
@@ -91,9 +106,13 @@ spa.chat = (function(){
 			$toggle:$slider.find('.spa-chat-head-toggle'),
 			$title:$slider.find('.spa-chat-head-title'),
 			$sizer:$slider.find('.spa-chat-sizer'),
-			$msgs:$slider.find('.spa-chat-msgs'),
-			$box:$slider.find('.spa-chat-box'),
-			$input:$slider.find('.spa-chat-input input[type=text]')
+			$list_box:$slider.find('.spa-chat-list-box'),
+			$msg_log:$slider.find('.spa-chat-msg-log'),
+			$msg_in:$slider.find('.spa-chat-msg-in'),
+			$input : $slider.find('.spa-chat-msg-in input[type=text]'),
+			$send:$slider.find('.spa-chat-msg-send'),
+			$form:$slider.find('.spa-chat-msg-form'),
+			$window:$(window)
 		};
 	};
 
