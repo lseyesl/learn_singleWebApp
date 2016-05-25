@@ -173,13 +173,13 @@ spa.shell = (function(){
 				default:
 					toggleChat(false);
 					delete anchor_map_proposed.chat;
-					$.urlAnchor.setAnchor(anchor_map_proposed,null,true);
+					$.uriAnchor.setAnchor(anchor_map_proposed,null,true);
 			}
 		}
 
 		if(!is_ok){
 			if(anchor_map_previous){
-				$.urlAnchor.setAnchor(anchor_map_previous,null,true);
+				$.uriAnchor.setAnchor(anchor_map_previous,null,true);
 				stateMap.anchor_map= nachor_map_previous;
 			}else{
 				delete anchor_map_proposed.chat;
