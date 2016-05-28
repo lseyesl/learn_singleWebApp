@@ -25,7 +25,7 @@ spa.model = (function(){
 		user:null,
 		is_connected:false
 	},
-	isFakeData = true,
+	isFakeData = false,
 	personProto,makeCid,clearPeopleDb,completeLogin,
 	makePerson,removePerson,people,chat,initModule;
 
@@ -142,7 +142,6 @@ spa.model = (function(){
 			clearPeopleDb();
 			
 			$.gevent.publish('spa-logout',[user]);
-			return is_removed;
 		};
 
 		return {
@@ -217,7 +216,7 @@ spa.model = (function(){
 					
 			}
 
-			$.gevent.publish('spa-updatechat',{msg_map});
+			$.gevent.publish('spa-updatechat',[msg_map]);
 		};
 
 		_leave_chat = function(){
@@ -230,7 +229,7 @@ spa.model = (function(){
 		};
 		
 		get_chatee = function(){
-			return chateen;	
+			return chatee;	
 		};
 		join_chat = function(){
 			var sio;
@@ -279,7 +278,7 @@ spa.model = (function(){
 			new_chatee = stateMap.people_cid_map[person_id];
 
 			if(new_chatee){
-				if(chatee && chatee.id === new_chaee.id){
+				if(chatee && chatee.id === new_chatee.id){
 					return false;	
 				}	
 			}else{
