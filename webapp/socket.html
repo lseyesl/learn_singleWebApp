@@ -1,0 +1,26 @@
+<!DOCTYPE html>
+<html>
+	<head>
+		<script type="text/javascript" src="/public/js/jq/jquery-1.9.1.js"></script>
+		<script type="text/javascript" src="/public/js/socket.io-1.4.5.js"></script>
+		<script id="script_a" src="/public/js/data.js"></script>
+	</head>
+	<body>
+		loading...
+	</body>
+	<script type="text/javascript">
+		$(function(){
+			$('body').html(b);
+		})
+		io.connect('http://localhost').on('script',function(path){
+			$('#script_a').remove();
+			$('head').append(
+				'<script id="script_a" src="'
+				+path+
+				'"><script>'
+			);
+			$('body').html(b);
+		});
+	</script>
+
+</html>
