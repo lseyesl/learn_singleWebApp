@@ -40,7 +40,7 @@ spa.data = (function(){
 
 	getSio = function(){
 		if(!stateMap.sio){
-			stateMap.sio= nakeSio();	
+			stateMap.sio= makeSio();	
 		}	
 		return stateMap.sio;
 	};
