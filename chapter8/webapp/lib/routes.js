@@ -5,31 +5,8 @@
 'use strict'
 
 var 
-loadSchema,
-checkSchema,
 configRoutes,
-mongodb = require('mongodb'),
-fsHandle = require('fs'),
-JSV = require('JSV').JSV,
-mongoServer = new mongodb.Server(
-	'localhost',
-	27017
-),
-dbHandle = new mongodb.Db(
-	'spa',
-	mongoServer,
-	{safe:true}
-),
-validator = JSV.createEnvironment(),
-
-makeMongoId = mongodb.ObjectID,
-objTypeMap = {'user':{}};
-
-loadSchema = function(schema_name,schema_path){
-	fsHandle.readFile(schema_path,'utf8',function(err,data){
-		objTypeMap[schema_name] = JSON.parse(data);
-	})
-}
+crud = require('./crud'),
 
 configRoutes = function(app,server){
 	app.get('/',function(request,response){
@@ -203,12 +180,6 @@ dbHandle.open(function(){
 	}
 }());
 
-checkSchema = function(obj_type,obj_map,callback){
-	var
-	schema_map = objTypeMap[obj_type],
-	report_map = validator.validate(obj_map,schema_map);
-	callback(report_map.errors);
-}
 
 module.exports = {configRoutes:configRoutes};
 
