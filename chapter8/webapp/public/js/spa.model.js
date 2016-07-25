@@ -60,6 +60,7 @@ spa.model = (function(){
 		stateMap.user.css_map = user_map.css_map;
 		stateMap.people_cid_map[user_map._id] = stateMap.user;
 		chat.join();
+		console.log('spa-login trigger');
 		$.gevent.publish('spa-login',[stateMap.user]);
 	};
 
@@ -118,6 +119,8 @@ spa.model = (function(){
 		};
 
 		login = function(name){
+			console.log('prev login');
+			debugger;
 			var sio = isFakeData ? spa.fake.mockSio:spa.data.getSio();
 			stateMap.user = makePerson({
 				cid:makeCid(),

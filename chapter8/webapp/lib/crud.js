@@ -11,7 +11,7 @@ checkType,
 constructObj,
 readObj,
 updateObj,
-destroyObj;
+destroyObj,
 
 mongodb = require('mongodb'),
 fsHandle = require('fs'),
@@ -35,12 +35,6 @@ loadSchema = function(schema_name,schema_path){
 	})
 }
 
-heckSchema = function(obj_type,obj_map,callback){
-	var
-	schema_map = objTypeMap[obj_type],
-	report_map = validator.validate(obj_map,schema_map);
-	callback(report_map.errors);
-}
 checkSchema = function(obj_type,obj_map,callback){
 	var
 	schema_map = objTypeMap[obj_type],
@@ -59,9 +53,9 @@ clearIsOnline = function(){
 	);
 }
 
-checkType = function(){
+checkType = function(obj_type){
 	if(!objTypeMap[obj_type]){
-		return ({error_msg:'Object type *'+obj_type = '* is not supported.'});	
+		return ({error_msg:'Object type *'+obj_type + '* is not supported.'});	
 	}	
 	return null;
 };
@@ -133,7 +127,7 @@ updateObj = function(obj_type,find_map,set_map,callback){
 							{$set:set_map},
 							{safe:true,multi:true,upsert:false},
 							function(inner_error,update_count){
-								callback({update_count:updae_count});
+								callback({update_count:update_count});
 							}
 						);
 					}
@@ -156,7 +150,7 @@ destroyObj = function(obj_type,find_map,callback){
 
 		dbHandle.collection(
 			obj_type,
-			functon(outer_error,collection){
+			function(outer_error,collection){
 				var options_map = {safe:true,single:true};
 				collection.remove(find_map,options_map,
 					function(inner_error,delete_count){
@@ -179,7 +173,7 @@ module.exports = {
 dbHandle.open(function(){
 	console.log('**connected to MongoDB**');
 	clearIsOnline();
-})
+});
 
 (function(){
 	var schema_name,schema_path;

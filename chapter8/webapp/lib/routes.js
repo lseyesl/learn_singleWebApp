@@ -49,7 +49,7 @@ configRoutes = function(app,server){
 				response.send(map_list);	
 			}
 		)
-	);
+	});
 
 	app.post('/:obj_type/update/:id',function(request,response){
 		crud.update(
