@@ -15,7 +15,7 @@ makeMongoId = crud.makeMongoId,
 chatterMap =[];
 
 
-emiUserList = function(io){
+emitUserList = function(io){
 	crud.read(
 		'user',
 		{is_online:true},
@@ -23,7 +23,7 @@ emiUserList = function(io){
 		function(result_list){
 			io
 			.of('/chat')
-			.emit('listchange',reuslt_list);
+			.emit('listchange',result_list);
 		}
 	)
 }
@@ -61,16 +61,20 @@ chatObj = {
 		var io = socket.listen(server);
 		io
 		.set('blacklist',[])
+	 	.of('/chat')
 		.on('connection',function(socket){
 			socket.on('adduser',function(user_map){
+				console.log('adduser','user_map:',user_map);
 				crud.read(
 					'user',
 					{name:user_map.name},
 					{},
 					function(result_list){
+						console.log('adduser result:',result_list);
 						var
 						result_map,
 						cid = user_map.cid;
+						console.log(cid);
 
 						delete user_map.cid;
 
@@ -85,7 +89,9 @@ chatObj = {
 								user_map,
 								function(result_list){
 									result_map = result_list[0];
-									result_map.cid =cid;
+									console.log('result_map*****:');
+									console.log(result_map,result_list);
+									result_map.cid = cid;
 									chatterMap[result_map._id] = socket;
 									socket.user_id = result_map._id;
 									socket.emit('userupdate',result_map);
@@ -96,7 +102,7 @@ chatObj = {
 					}
 				)	
 			});
-			socket.on('updaechat',function(chat_map){
+			socket.on('updatechat',function(chat_map){
 				if(chatterMap.hasOwnProperty(chat_map.dest_id)){
 					chatterMap[chat_map.dest_id]	
 					.emit('updatechat',chat_map);
